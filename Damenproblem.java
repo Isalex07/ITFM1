@@ -26,7 +26,7 @@ public class Damenproblem {
 			}
 		}else {
 			x = x + 1;
-			if (x <= Schachbrett[0].length) {
+			if (x < Schachbrett[0].length) {
 				control(x,y);
 			}else {
 				clearall();
@@ -65,8 +65,40 @@ public class Damenproblem {
 	
 	public boolean Diagonal(int x,int y) {
 		boolean Dame = false;
-		
-		
+		int temp = x;
+
+		for(int i=y;i>0;--i){
+			if(Schachbrett[temp][i]=='$' || Schachbrett[temp][i] == 'N'){
+				Dame = true;
+			}
+			temp = temp - 1;
+		}
+
+
+		temp = y;
+		for(int i=x;i<Schachbrett.length-1;i++){
+			if(Schachbrett[i][temp] == '$' || Schachbrett[i][temp] == 'N'){
+				Dame = true;
+			}
+			temp = temp + 1;
+		}
+
+		temp = x;
+		for(int i=y;i<Schachbrett.length-1;i++){
+			if(Schachbrett[temp][i] == '$' || Schachbrett[temp][i] == 'N'){
+				Dame = true;
+			}
+			temp = temp - 1;
+
+		}
+
+		temp = y;
+		for(int i=x;i<Schachbrett.length-1;i++){
+			if(Schachbrett[i][temp] == '$' || Schachbrett[i][temp] == 'N'){
+				Dame = true;
+			}
+			temp = temp - 1;
+		}
 		return Dame;
 	}
 	
