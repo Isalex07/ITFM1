@@ -1,3 +1,10 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package damenproblem;
+
 
 public class Damenproblem {
 
@@ -12,18 +19,21 @@ public class Damenproblem {
 	    //y=0;
 	    Damenmenge=0;
 		//control(x,y);
+                
 	}
 	
 	public void control(int x,int y) {
 	
 		if(Spalte(x,y)== false && Zeile(x,y)== false && Diagonal(x,y)== false) {
 			Damenmenge = Damenmenge + 1;
-			if (Damenmenge < 8) {
-				Schachbrett[x][y] = '$';
+                        Schachbrett[x][y] = '$';
+			if (Damenmenge < 8) {				
 				y = y + 1;
 				x = 0;
 				control(x,y);				
-			}
+			}else{
+                          anzeigen();   
+                        }
 		}else {
 			x = x + 1;
 			if (x < Schachbrett[0].length) {
@@ -34,16 +44,18 @@ public class Damenproblem {
 				y=0;
 				control(x,y);
 			}
-		}
-		anzeigen();
-						
+		}								
 	}
 	
 	public boolean Spalte(int x,int y) {
 		boolean Dame = false;
 		
+                 if (alteposition(x,y)){
+                    return true;
+                }
+                
 		for(int i=0;i<Schachbrett.length;i++) {
-			if(Schachbrett[i][y] == '$' || Schachbrett[i][y] == 'N') {
+			if(Schachbrett[i][y] == '$') {
 				Dame = true;
 			}
 		}
@@ -54,8 +66,12 @@ public class Damenproblem {
 	public boolean Zeile(int x,int y) {
 		boolean Dame = false;
 		
-		for(int j=0;j<Schachbrett[0].length;j++) {
-			if(Schachbrett[x][j]=='$' || Schachbrett[x][j]=='N'){
+                if (alteposition(x,y)){
+                    return true;
+                }
+                
+                for(int j=0;j<Schachbrett[0].length;j++) {
+			if(Schachbrett[x][j]=='$'){
 				Dame = true;
 			}
 		}
@@ -65,46 +81,88 @@ public class Damenproblem {
 	
 	public boolean Diagonal(int x,int y) {
 		boolean Dame = false;
-		int temp = x;
-
-		for(int i=y;i>0;--i){
-			if(Schachbrett[temp][i]=='$' || Schachbrett[temp][i] == 'N'){
-				Dame = true;
-			}
-			temp = temp - 1;
-		}
-
-
-		temp = y;
-		for(int i=x;i<Schachbrett.length-1;i++){
-			if(Schachbrett[i][temp] == '$' || Schachbrett[i][temp] == 'N'){
-				Dame = true;
-			}
-			temp = temp + 1;
-		}
-
-		temp = x;
-		for(int i=y;i<Schachbrett.length-1;i++){
-			if(Schachbrett[temp][i] == '$' || Schachbrett[temp][i] == 'N'){
-				Dame = true;
-			}
-			temp = temp - 1;
-
-		}
-
-		temp = y;
-		for(int i=x;i<Schachbrett.length-1;i++){
-			if(Schachbrett[i][temp] == '$' || Schachbrett[i][temp] == 'N'){
-				Dame = true;
-			}
-			temp = temp - 1;
-		}
-		return Dame;
+		int tempx = x;
+                int tempy = y;
+                
+                if (alteposition(x,y)){
+                    return true;
+                }
+                
+                
+                
+                //                      ^
+                //-                     '
+                // -                    '
+                //  -                   '
+                //   -                  '
+                while(tempx >= 0 && tempy >= 0){
+                    
+                    if(Schachbrett[tempx][tempy] == '$' ){
+                        Dame = true;
+                    }
+                    tempx = tempx - 1;
+                    tempy = tempy - 1;
+                    
+                }
+                
+                //                     '
+                //-                    '
+                // -                   '
+                //  -                  '
+                //   -                `´
+                tempx = x;
+                tempy = y;
+                while(tempx < Schachbrett.length && tempy < Schachbrett.length){
+                    
+                    if (Schachbrett[tempx][tempy] == '$' ){
+                        Dame = true;
+                    }
+                    tempx = tempx + 1;
+                    tempy = tempy + 1;
+                                
+                }
+                
+                
+                //                     ^
+                //      -              '
+                //    -                '
+                //  -                  '
+                //-                    '                
+                
+                tempx = x;
+                tempy = y;
+                while(tempx >= 0 && tempy < Schachbrett.length){
+                    
+                    if (Schachbrett[tempx][tempy] == '$'){
+                        Dame = true;
+                    }
+                    tempx = tempx - 1 ;
+                    tempy = tempy + 1;
+                }
+                
+                //                     '
+                //      -              '
+                //    -                '
+                //  -                  '
+                //-                    `´
+                
+                tempx = x;
+                tempy = y;
+                while(tempy >= 0 && tempx < Schachbrett.length){
+                    
+                    if (Schachbrett[tempx][tempy] == '$'){
+                        Dame = true;
+                    }
+                    tempx = tempx + 1;
+                    tempy = tempy - 1;
+                }
+                                
+                return Dame;
 	}
 	
 	public void clearall() {
-		for(int i=0;i<Schachbrett[0].length;i++) {
-			for(int j=0;j<Schachbrett.length;j++) {
+		for(int i=0;i<Schachbrett.length;i++) {
+			for(int j=0;j<Schachbrett[0].length;j++) {
 				if(Schachbrett[i][j]=='$') {
 					Schachbrett[i][j]  ='N';
 				}
@@ -112,15 +170,26 @@ public class Damenproblem {
 		}
 		Damenmenge = 0;
 	}
+        
+        public boolean alteposition(int x,int y){
+        
+            if(Schachbrett[x][y] == 'N'){
+                return true;
+            }
+            return false;
+        }
+        
+        
 	
 	public void anzeigen() {
-		for(int i=0;i<Schachbrett[0].length;i++) {
-			for(int j=0;j<Schachbrett.length;j++) {
-				if(Schachbrett[i][j]=='N'){
-					Schachbrett[i][j] = ' ';
+		for(int i=0;i<Schachbrett.length;i++) {
+			for(int j=0;j<Schachbrett[0].length;j++) {
+				if(Schachbrett[i][j] != '$'){
+					Schachbrett[i][j] = '-';
 				}
-				System.out.print(Schachbrett[i][j]);
-				System.out.print(" ");				
+                                
+                                System.out.print(Schachbrett[i][j]);
+                                System.out.print(" | ");
 			}
 			System.out.println();			
 		}
@@ -128,3 +197,4 @@ public class Damenproblem {
 	}
 	
 }
+
